@@ -1,12 +1,12 @@
-# Getting started with Fat Filesystem on mbed OS
+# Getting started with Fat filesystem on mbed OS
 
-This is a guide that reviews the steps required to get the FAT filesystem working on an mbed OS platform.
+This guide reviews the steps to get the FAT filesystem working on an mbed OS platform.
 
 Please install [mbed CLI](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli).
 
-## Get the example application!
+## Import the example application
 
-From the command line, import the example:
+From the command-line, import the example:
 
 ```
 mbed import mbed-os-example-fat-filesystem
@@ -15,13 +15,13 @@ cd mbed-os-example-fat-filesystem
 
 ### Now compile
 
-Invoke `mbed compile` specifying the name of your platform and your favorite toolchain (`GCC_ARM`, `ARM`, `IAR`). For example, for the ARM Compiler 5:
+Invoke `mbed compile`, and specify the name of your platform and your favorite toolchain (`GCC_ARM`, `ARM`, `IAR`). For example, for the ARM Compiler 5:
 
 ```
 mbed compile -m K64F -t ARM
 ```
 
-Your PC may take a few minutes to compile your code. At the end you should get the following result:
+Your PC may take a few minutes to compile your code. At the end, you see the following result:
 
 ```
 [snip]
@@ -52,11 +52,12 @@ Image: ./BUILD/K64F/gcc_arm/mbed-os-example-fat-filesystem.bin
 ### Program your board
 
 1. Connect your mbed device to the computer over USB.
-1. Copy the binary file to the mbed device .
+1. Copy the binary file to the mbed device.
 1. Press the reset button to start the program.
-1. Open the uart of the board in your favorite uart viewing program. e.g. `screen /dev/ttyACM0`
+1. Open the UART of the board in your favorite UART viewing program. For example, `screen /dev/ttyACM0`.
 
-You should see the following output:
+You see the following output:
+
 ```
 Welcome to the filesystem example.
 Formatting a FAT, RAM-backed filesystem. done.
@@ -96,36 +97,35 @@ Filesystem Demo complete.
 
 ```
 
-Congratulations if you managed to complete this test!
-
 ## Switch from RAM backed block device to an SD card
 
-From the command line, run the following command:
+From the command-line, run the following command:
 
 ```bash
 mbed add sd-driver
 ```
 
 Then change the code on line 3 of `main.cpp` to import the SD card header:
+
 ```C
 #include "SDBlockDevice.h"
 ```
 
-And change the block device declaration on line 7 of `main.cpp` to use the SD card, replacing the `PinName`s with the pins connected to the SD card:
+Change the block device declaration on line 7 of `main.cpp` to use the SD card by replacing the `PinName`s with the pins connected to the SD card:
+
 ```C
 SDBlockDevice bd(PinName mosi, PinName miso, PinName sclk, PinName cs);
 ```
 
-
 ## Troubleshooting
 
-1. Make sure `mbed-cli` is working correctly and its version is greater than `1.0.0`
+1. Make sure `mbed-cli` is working correctly and its version is newer than `1.0.0`.
 
  ```
  mbed --version
  ```
 
- If not, you can update it easily:
+ If not, update it:
 
  ```
  pip install mbed-cli --upgrade
