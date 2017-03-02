@@ -4,6 +4,10 @@ This guide reviews the steps to get the FAT filesystem working on an mbed OS pla
 
 Please install [mbed CLI](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli).
 
+## Hardware requirements
+
+This exmaple uses a RAM backed FAT filesystem. The FAT filesystem requires at least 128 512-byte blocks for a total of 64KB of space. This space is backed by the HeapBlockDevice, which uses a target's heap for storage. Therefore, to support this example, a target must have at least 64KB of space usable by as heap. As there is more than just the heap in a device's ram this translates to the requirement that a target's RAM must be at least 96KB large.
+
 ## Import the example application
 
 From the command-line, import the example:
