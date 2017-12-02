@@ -2,8 +2,16 @@
 #include <stdio.h>
 #include <errno.h>
 
+// Block devices
 #include "SPIFBlockDevice.h"
+#include "DataFlashBlockDevice.h"
+#include "SDBlockDevice.h"
+#include "HeapBlockDevice.h"
+
+// File systems
 #include "LittleFileSystem.h"
+#include "FATFileSystem.h"
+
 
 // Physical block device, can be any device that supports the BlockDevice API
 SPIFBlockDevice bd(
@@ -44,6 +52,7 @@ void erase() {
     }
 }
 
+
 // Entry point for the example
 int main() {
     printf("--- Mbed OS filesystem example ---\n");
@@ -52,7 +61,7 @@ int main() {
     irq.fall(erase);
 
     // Try to mount the filesystem
-    printf("Mounting the file system... ");
+    printf("Mounting the filesystem... ");
     fflush(stdout);
     int err = fs.mount(&bd);
     printf("%s\n", (err ? "Fail :(" : "OK"));
@@ -161,7 +170,7 @@ int main() {
     }
 
     // Display the numbers file
-    printf("Opening \"/fs/numbers.txt\"...");
+    printf("Opening \"/fs/numbers.txt\"... ");
     fflush(stdout);
     f = fopen("/fs/numbers.txt", "r");
     printf("%s\n", (!f ? "Fail :(" : "OK"));
