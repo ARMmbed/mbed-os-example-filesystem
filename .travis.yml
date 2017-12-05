@@ -1,0 +1,29 @@
+before_install:
+  # Make sure pipefail
+  - set -o pipefail
+  # Setup ppa to make sure arm-none-eabi-gcc is correct version
+  - sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa
+  - sudo add-apt-repository -y ppa:libreoffice/libreoffice-4-2
+  - sudo apt-get update -qq
+
+install:
+  # Install dependencies
+  - sudo apt-get install gcc-arm-embedded
+  - pip install --user mbed-cli
+  # Deploy mbed and pip dependencies
+  - mbed deploy
+  - pip install --user -r mbed-os/requirements.txt
+  # Print versions we use
+  - arm-none-eabi-gcc --version
+  - gcc --version
+  - python --version
+
+script:
+  # Check that example compiles with littlefs + spif
+  - mbed compile -t GCC_ARM -m K82F -j0
+
+  # Check that example compiles with fatfs + sd
+  - sed -i 's/LittleFileSystem fs/FATFileSystem fs/g' main.cpp
+  - sed -i 's/SPIFFileSystem bd/SDBlockDevice bd/g' main.cpp
+  - sed -i 's/MBED_CONF_SPIF_DRIVER/MBED_CONF_SD/g' main.cpp
+  - mbed compile -t GCC_ARM -m K64F -j0
