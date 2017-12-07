@@ -166,22 +166,21 @@ Mbed OS has two options for the file system:
   for embedded systems, specifically for microcontrollers that use flash
   storage.
 
-  - **Bounded RAM/ROM** - The LittleFS works with a limited amount of memory.
-    The LittleFS avoids recursion and limits dynamic memory to configurable
+  - **Bounded RAM/ROM** - This file system works with a limited amount of memory.
+    It avoids recursion and limits dynamic memory to configurable
     buffers.
   
-  - **Power-loss resilient** - We designed the LittleFS for operating systems
-    that may have random power failures. The LittleFS has strong copy-on-write
+  - **Power-loss resilient** - We designed this for operating systems
+    that may have random power failures. It has strong copy-on-write
     guarantees and keeps storage on disk in a valid state.
   
   - **Wear leveling** - Because the most common form of embedded storage is
-    erodible flash memories, the LittleFS provides a form of dynamic wear
+    erodible flash memories, this file system provides a form of dynamic wear
     leveling for systems that cannot fit a full flash translation layer.
 
 - **FATFileSystem** - The FAT file system is a well-known file system that you
   can find on almost every system, including PCs. The Mbed OS implementation of
-  the FAT file system is based on [ChanFS](http://elm-chan.org/fsw/ff/00index_e.html)
-  and is optimized for small embedded systems.
+  the FAT file system is based on ChanFS and is optimized for small embedded systems.
 
   - **Portable** - Almost every operating system supports the FAT file system,
     which is the most common file system found on portable storage, such as SD
