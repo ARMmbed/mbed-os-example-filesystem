@@ -58,13 +58,13 @@ Total Static RAM memory (data + bss): 14116 bytes
 Total RAM memory (data + bss + heap + stack): 38692 bytes
 Total Flash memory (text + data + misc): 91947 bytes
 
-Image: ./BUILD/K64F/gcc_arm/mbed-os-example-fat-filesystem.bin
+Image: ./BUILD/K64F/ARM/mbed-os-example-filesystem.bin
 ```
 
 #### Run the example
 
 1. Connect your Mbed Enabled device to the computer over USB.
-1. Copy the binary file to the Mbed device.
+1. Copy the binary file to the Mbed Enabled device.
 1. Press the reset button to start the program.
 1. Open the UART of the board in your favorite UART viewing program. For
    example, `screen /dev/ttyACM0`.
@@ -203,10 +203,10 @@ pins in `driver/mbed_lib.json` are correct.
 -        MBED_CONF_SPIF_DRIVER_SPI_CLK,
 -        MBED_CONF_SPIF_DRIVER_SPI_CS);
 +SDBlockDevice bd(
-+        MBED_CONF_SD_DRIVER_SPI_MOSI,
-+        MBED_CONF_SD_DRIVER_SPI_MISO,
-+        MBED_CONF_SD_DRIVER_SPI_CLK,
-+        MBED_CONF_SD_DRIVER_SPI_CS);
++        MBED_CONF_SD_SPI_MOSI,
++        MBED_CONF_SD_SPI_MISO,
++        MBED_CONF_SD_SPI_CLK,
++        MBED_CONF_SD_SPI_CS);
 ```
 
 Mbed OS has several options for the block device:
@@ -247,7 +247,7 @@ control over the allocation of storage.
   With the chaining block device, you can chain multiple block devices together
   and extend the usable amount of storage.
 
-- [MBRBlockDevice](https://os.mbed.com/docs/v5.6/reference/mbrblockdevice.html) -
+- [**MBRBlockDevice**](https://os.mbed.com/docs/v5.6/reference/mbrblockdevice.html) -
   Mbed OS comes with support for storing partitions on disk with a Master Boot
   Record (MBR). The MBRBlockDevice provides this functionality and supports
   creating partitions at runtime or using preformatted partitions configured
