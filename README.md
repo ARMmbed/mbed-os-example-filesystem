@@ -68,6 +68,8 @@ Image: ./BUILD/K64F/ARM/mbed-os-example-filesystem.bin
 1. Press the reset button to start the program.
 1. Open the UART of the board in your favorite UART viewing program. For
    example, `screen /dev/ttyACM0`.
+   
+**Note:** The default serial port baud rate is 9600 bit/s.
 
 Expected output:
 
@@ -147,6 +149,11 @@ Deinitializing the block device... OK
 
 Note that if you press the reset button at the wrong time, you may corrupt
 a file system that is not power resilient!
+
+#### Troubleshooting
+
+If you have problems, you can review the [documentation](https://os.mbed.com/docs/latest/tutorials/debugging.html)
+for suggestions on what could be wrong and how to fix it.
 
 ## Changing the file system
 
