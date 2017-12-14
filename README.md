@@ -318,3 +318,29 @@ control over the allocation of storage.
   wear, the exhaustible block device simulates wear on another form of storage.
   You can configure it to expire blocks as necessary.
 
+## Tested configurations
+
+- K64F + Heap + LittleFS
+- K64F + Heap + FATFS
+- K64F + SD + LittleFS
+- K64F + SD + FATFS
+- K64F + SPIF (requires shield) + LittleFS
+- K64F + SPIF (requires shield) + FATFS
+- K64F + DataFlash (requires shield) + LittleFS
+- K64F + DataFlash (requires shield) + FATFS
+- UBLOX_EVK_ODIN_W2 + Heap + LittleFS
+- UBLOX_EVK_ODIN_W2 + Heap + FATFS
+- UBLOX_EVK_ODIN_W2 + SD + LittleFS
+- UBLOX_EVK_ODIN_W2 + SD + FATFS
+- UBLOX_EVK_ODIN_W2 + SPIF (requires shield) + LittleFS
+- UBLOX_EVK_ODIN_W2 + SPIF (requires shield) + FATFS
+- UBLOX_EVK_ODIN_W2 + DataFlash (requires shield) + LittleFS
+- UBLOX_EVK_ODIN_W2 + DataFlash (requires shield) + FATFS
+- NUCLEO_F429ZI + Heap + LittleFS
+- NUCLEO_F429ZI + Heap + FATFS
+- NUCLEO_F429ZI + SD (requires shield) + LittleFS
+- NUCLEO_F429ZI + SD (requires shield) + FATFS
+- NUCLEO_F429ZI + SPIF (requires shield) + LittleFS
+- NUCLEO_F429ZI + SPIF (requires shield) + FATFS
+- NUCLEO_F429ZI + DataFlash (requires shield) + LittleFS
+- NUCLEO_F429ZI + DataFlash (requires shield) + FATFS
