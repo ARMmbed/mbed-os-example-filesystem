@@ -2,7 +2,7 @@
 
 This example demonstrates how to use the Mbed OS file system.
 
-You can find more information about the Mbed OS file system and other related pieces of the Mbed OS storage stack [in the storage overview](https://os.mbed.com/docs/v5.6/reference/storage.html).
+You can find more information about the Mbed OS file system and other related pieces of the Mbed OS storage stack [in the storage overview](https://os.mbed.com/docs/latest/reference/storage.html).
 
 ## Hardware requirements
 
@@ -18,7 +18,7 @@ how to change the file system or block device in the example.
 
 #### Import the example
 
-Make sure you have an Mbed development environment set up. [Get started with Mbed OS](https://os.mbed.com/docs/v5.6/tutorials/your-first-program.html)
+Make sure you have an Mbed development environment set up. [Get started with Mbed OS](https://os.mbed.com/docs/latest/tutorials/your-first-program.html)
 to set everything up.
 
 From the command-line, import the example:
@@ -162,7 +162,7 @@ for suggestions on what could be wrong and how to fix it.
 
 ## Changing the file system
 
-In Mbed OS, a C++ classes that inherits from the [FileSystem](https://os.mbed.com/docs/v5.6/reference/storage.html#declaring-a-file-system)
+In Mbed OS, a C++ classes that inherits from the [FileSystem](https://os.mbed.com/docs/latest/reference/storage.html#declaring-a-file-system)
 interface represents each file system. You can change the file system in the
 example by changing the class declared in main.cpp.
 
@@ -173,7 +173,7 @@ example by changing the class declared in main.cpp.
 
 Mbed OS has two options for the file system:
 
-- [**LittleFileSystem**](https://os.mbed.com/docs/v5.6/reference/littlefilesystem.html) -
+- [**LittleFileSystem**](https://os.mbed.com/docs/latest/reference/littlefilesystem.html) -
   The little file system is a fail-safe file system we designed
   for embedded systems, specifically for microcontrollers that use flash
   storage.
@@ -209,7 +209,7 @@ Mbed OS has two options for the file system:
 
 ## Changing the block device
 
-In Mbed OS, a C++ classes that inherits from the [BlockDevice](https://os.mbed.com/docs/v5.6/reference/storage.html#block-devices)
+In Mbed OS, a C++ classes that inherits from the [BlockDevice](https://os.mbed.com/docs/latest/reference/storage.html#block-devices)
 interface represents each block device. You can change the filesystem in the
 example by changing the class declared in main.cpp.
 
@@ -287,15 +287,15 @@ Mbed OS has several options for the block device:
 Additionally, Mbed OS contains several utility block devices to give you better
 control over the allocation of storage.
 
-- [**SlicingBlockDevice**](https://os.mbed.com/docs/v5.6/reference/slicingblockdevice.html) -
+- [**SlicingBlockDevice**](https://os.mbed.com/docs/latest/reference/slicingblockdevice.html) -
   With the slicing block device, you can partition storage into smaller block
   devices that you can use independently.
 
-- [**ChainingBlockDevice**](https://os.mbed.com/docs/v5.6/reference/chainingblockdevice.html) -
+- [**ChainingBlockDevice**](https://os.mbed.com/docs/latest/reference/chainingblockdevice.html) -
   With the chaining block device, you can chain multiple block devices together
   and extend the usable amount of storage.
 
-- [**MBRBlockDevice**](https://os.mbed.com/docs/v5.6/reference/mbrblockdevice.html) -
+- [**MBRBlockDevice**](https://os.mbed.com/docs/latest/reference/mbrblockdevice.html) -
   Mbed OS comes with support for storing partitions on disk with a Master Boot
   Record (MBR). The MBRBlockDevice provides this functionality and supports
   creating partitions at runtime or using preformatted partitions configured
