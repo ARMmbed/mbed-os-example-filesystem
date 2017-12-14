@@ -2,15 +2,15 @@
 
 This example demonstrates how to use the Mbed OS file system.
 
-More information about the Mbed OS file system and other related pieces of the Mbed OS storage stack can be found [here](https://os.mbed.com/docs/v5.6/reference/storage.html).
+You can find more information about the Mbed OS file system and other related pieces of the Mbed OS storage stack [in the storage overview](https://os.mbed.com/docs/v5.6/reference/storage.html).
 
 ## Hardware requirements
 
 This example uses a block device as storage. This can be either an external
-block device (one of SPI flash, DataFlash, or an SD card) or simulated on a
+block device (one of SPI flash, DataFlash or an SD card) or simulated on a
 heap block device on boards with enough RAM.
 
-By default, this example uses an instance of LittleFS on external SPI flash.
+This example uses an instance of the LittleFileSystem API (LittleFS) on external SPI flash.
 The [changing the block device](#changing-the-block-device) section describes
 how to change the file system or block device in the example.
 
@@ -174,7 +174,7 @@ example by changing the class declared in main.cpp.
 Mbed OS has two options for the file system:
 
 - [**LittleFileSystem**](https://os.mbed.com/docs/v5.6/reference/littlefilesystem.html) -
-  The little file system (LittleFS) is a fail-safe file system we designed
+  The little file system is a fail-safe file system we designed
   for embedded systems, specifically for microcontrollers that use flash
   storage.
   
@@ -248,8 +248,8 @@ Mbed OS has several options for the block device:
   that support the DataFlash protocol, such as the Adesto AT45DB series of
   devices. DataFlash is a memory protocol that combines flash with SRAM buffers
   for a programming interface. DataFlash supports byte-sized read and writes, with
-  an erase size of around 528 bytes or sometimes 1056 bytes. DataFlash provides
-  erase sizes with and extra 16 bytes for error correction codes (ECC), so a flash
+  an erase size of about 528 bytes or sometimes 1056 bytes. DataFlash provides
+  erase sizes with an extra 16 bytes for error correction codes (ECC), so a flash
   translation layer (FTL) may still present 512 byte erase sizes.
   
   ``` cpp
