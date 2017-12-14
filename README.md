@@ -2,12 +2,17 @@
 
 This example demonstrates how to use the Mbed OS file system.
 
-Please install [Mbed CLI](https://os.mbed.com/docs/v5.6/tools/setup.html).
+More information about the Mbed OS file system and other related pieces of the Mbed OS storage stack can be found [here](https://os.mbed.com/docs/v5.6/reference/storage.html).
 
 ## Hardware requirements
 
 This example uses a block device as storage. This can be either an external
-block device or simulated on a heap block device on boards with enough RAM.
+block device (one of SPI flash, DataFlash, or an SD card) or simulated on a
+heap block device on boards with enough RAM.
+
+By default, this example uses an instance of LittleFS on external SPI flash.
+The [changing the block device](#changing-the-block-device) section describes
+how to change the file system or block device in the example.
 
 ## Usage
 
