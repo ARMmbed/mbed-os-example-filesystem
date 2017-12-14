@@ -4,6 +4,18 @@ This example demonstrates how to use the Mbed OS file system.
 
 You can find more information about the Mbed OS file system and other related pieces of the Mbed OS storage stack [in the storage overview](https://os.mbed.com/docs/latest/reference/storage.html).
 
+**Table of contents:**
+
+1. [Hardware requirements](#hardware-requirements)
+1. [Usage](#usage)
+   - [Import the example](#import-the-example)
+   - [Compile the example](#compile-the-example)
+   - [Run the example](#run-the-example)
+   - [Troubleshooting](#troubleshooting)
+1. [Changing the file system](#changing-the-file-system)
+1. [Changing the block device](#changing-the-block-device)
+1. [Tested configurations](#tested-configurations)
+
 ## Hardware requirements
 
 This example uses a block device as storage. This can be either an external
