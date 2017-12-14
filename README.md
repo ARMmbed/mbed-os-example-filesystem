@@ -172,6 +172,10 @@ Mbed OS has two options for the file system:
   The little file system (LittleFS) is a fail-safe file system we designed
   for embedded systems, specifically for microcontrollers that use flash
   storage.
+  
+  ``` cpp
+  LittleFileSystem fs("fs");
+  ```
 
   - **Bounded RAM/ROM** - This file system works with a limited amount of memory.
     It avoids recursion and limits dynamic memory to configurable
@@ -188,6 +192,10 @@ Mbed OS has two options for the file system:
 - **FATFileSystem** - The FAT file system is a well-known file system that you
   can find on almost every system, including PCs. The Mbed OS implementation of
   the FAT file system is based on ChanFS and is optimized for small embedded systems.
+  
+  ``` cpp
+  FATFileSystem fs("fs");
+  ```
 
   - **Portable** - Almost every operating system supports the FAT file system,
     which is the most common file system found on portable storage, such as SD
@@ -219,29 +227,57 @@ pins in `driver/mbed_lib.json` are correct.
 Mbed OS has several options for the block device:
 
 - **SPIFBlockDevice** - Block device driver for NOR-based SPI flash devices that
-support SFDP. NOR-based SPI flash supports byte-sized read and writes, with an
-erase size of about 4kbytes. An erase sets a block to all 1s, with successive
-writes clearing set bits.
+  support SFDP. NOR-based SPI flash supports byte-sized read and writes, with an
+  erase size of about 4kbytes. An erase sets a block to all 1s, with successive
+  writes clearing set bits.
+
+  ``` cpp
+  SPIFBlockDevice bd(
+          MBED_CONF_SPIF_DRIVER_SPI_MOSI,
+          MBED_CONF_SPIF_DRIVER_SPI_MISO,
+          MBED_CONF_SPIF_DRIVER_SPI_CLK,
+          MBED_CONF_SPIF_DRIVER_SPI_CS);
+  ```
 
 - **DataFlashBlockDevice** - Block device driver for NOR-based SPI flash devices
-that support the DataFlash protocol, such as the Adesto AT45DB series of
-devices. DataFlash is a memory protocol that combines flash with SRAM buffers
-for a programming interface. DataFlash supports byte-sized read and writes, with
-an erase size of around 528 bytes or sometimes 1056 bytes. DataFlash provides
-erase sizes with and extra 16 bytes for error correction codes (ECC), so a flash
-translation layer (FTL) may still present 512 byte erase sizes.
+  that support the DataFlash protocol, such as the Adesto AT45DB series of
+  devices. DataFlash is a memory protocol that combines flash with SRAM buffers
+  for a programming interface. DataFlash supports byte-sized read and writes, with
+  an erase size of around 528 bytes or sometimes 1056 bytes. DataFlash provides
+  erase sizes with and extra 16 bytes for error correction codes (ECC), so a flash
+  translation layer (FTL) may still present 512 byte erase sizes.
+  
+  ``` cpp
+  DataFlashBlockDevice bd(
+          MBED_CONF_DATAFLASH_SPI_MOSI,
+          MBED_CONF_DATAFLASH_SPI_MISO,
+          MBED_CONF_DATAFLASH_SPI_CLK,
+          MBED_CONF_DATAFLASH_SPI_CS);
+  ```
 
 - **SDBlockDevice** - Block device driver for SD cards and eMMC memory chips. SD
-cards or eMMC chips offer a full FTL layer on top of NAND flash. This makes the
-storage well-suited for systems that require a about 1GB of memory.
-Additionally, SD cards are a popular form of portable storage. They are useful
-if you want to store data that you can access from a PC.
+  cards or eMMC chips offer a full FTL layer on top of NAND flash. This makes the
+  storage well-suited for systems that require a about 1GB of memory.
+  Additionally, SD cards are a popular form of portable storage. They are useful
+  if you want to store data that you can access from a PC.
+  
+  ``` cpp
+  SDBlockDevice bd(
+          MBED_CONF_SD_SPI_MOSI,
+          MBED_CONF_SD_SPI_MISO,
+          MBED_CONF_SD_SPI_CLK,
+          MBED_CONF_SD_SPI_CS);
+  ```
 
 - [**HeapBlockDevice**](https://os.mbed.com/docs/v5.6/reference/heapblockdevice.html) -
   Block device that simulates storage in RAM using the heap. Do not use the heap
   block device for storing data persistently because a power loss causes
   complete loss of data. Instead, use it fortesting applications when a storage
   device is not available.
+  
+  ``` cpp
+  HeapBlockDevice bd(1024*512, 512);
+  ```
 
 Additionally, Mbed OS contains several utility block devices to give you better
 control over the allocation of storage.
