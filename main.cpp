@@ -19,6 +19,7 @@
 
 // Block devices
 #include "SPIFBlockDevice.h"
+#include "DataFlashBlockDevice.h"
 #include "SDBlockDevice.h"
 #include "HeapBlockDevice.h"
 
