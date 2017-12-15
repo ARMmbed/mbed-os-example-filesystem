@@ -239,7 +239,7 @@ example by changing the class declared in main.cpp.
 ```
 
 **Note:** Most block devices require pin assignments. Double check that the
-pins in `driver/mbed_lib.json` are correct. For example, to change the pins for the sd-driver, open `sd-driver/config/mbed_lib.json` and change your target platform to the correct pin-out in the "target_overrides" configuration:
+pins in `<driver>/mbed_lib.json` are correct. For example, to change the pins for the sd-driver, open `sd-driver/config/mbed_lib.json` and change your target platform to the correct pin-out in the "target_overrides" configuration:
 
 ```
    "target_overrides": {
