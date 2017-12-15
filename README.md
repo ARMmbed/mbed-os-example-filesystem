@@ -225,9 +225,6 @@ In Mbed OS, a C++ classes that inherits from the [BlockDevice](https://os.mbed.c
 interface represents each block device. You can change the filesystem in the
 example by changing the class declared in main.cpp.
 
-**Note:** Most block devices require pin assignments. Double check that the
-pins in `driver/mbed_lib.json` are correct.
-
 ``` diff
 -SPIFBlockDevice bd(
 -        MBED_CONF_SPIF_DRIVER_SPI_MOSI,
@@ -239,6 +236,22 @@ pins in `driver/mbed_lib.json` are correct.
 +        MBED_CONF_SD_SPI_MISO,
 +        MBED_CONF_SD_SPI_CLK,
 +        MBED_CONF_SD_SPI_CS);
+```
+
+**Note:** Most block devices require pin assignments. Double check that the
+pins in `<driver>/mbed_lib.json` are correct. For example, to change the pins for the SD driver, open `sd-driver/config/mbed_lib.json`, and change your target platform to the correct pin-out in the `target_overrides` configuration:
+
+```
+   "target_overrides": {
+         ...
+         "NUCLEO_F429ZI": {
+             "SPI_MOSI": "PC_12",
+             "SPI_MISO": "PC_11",
+             "SPI_CLK":  "PC_10",
+             "SPI_CS":   "PA_15"
+         },
+         ...
+     }
 ```
 
 Mbed OS has several options for the block device:
