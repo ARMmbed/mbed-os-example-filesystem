@@ -183,6 +183,12 @@ example by changing the class declared in main.cpp.
 + FATFileSysten fs("fs");
 ```
 
+**Note:** Different file systems require different minimum number of storage
+blocks to function. For the `FATFileSystem`, this example requires a minimum of
+256 blocks, and for the `LittleFileSystem`, this example requires a minimum of 6
+blocks. You can find the number of blocks on a block device by dividing the
+block device's size by its erase size.
+
 Mbed OS has two options for the file system:
 
 - [**LittleFileSystem**](https://os.mbed.com/docs/latest/reference/littlefilesystem.html) -
