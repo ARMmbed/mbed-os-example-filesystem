@@ -145,6 +145,9 @@ int main() {
     
         // Store number
         fprintf(f, "    %d\n", number);
+
+        // Flush between write and read on same file
+        fflush(f);
     }
     printf("\rIncrementing numbers (%d/%d)... OK\n", 10, 10);
 
