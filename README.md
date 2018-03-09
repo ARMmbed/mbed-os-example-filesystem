@@ -359,14 +359,14 @@ control over the allocation of storage.
 - K64F + SPIF (requires shield) + FATFS
 - K64F + DataFlash (requires shield) + LittleFS
 - K64F + DataFlash (requires shield) + FATFS
-- UBLOX_EVK_ODIN_W2 + Heap + LittleFS
-- UBLOX_EVK_ODIN_W2 + Heap + FATFS
-- UBLOX_EVK_ODIN_W2 + SD + LittleFS
-- UBLOX_EVK_ODIN_W2 + SD + FATFS
-- UBLOX_EVK_ODIN_W2 + SPIF (requires shield) + LittleFS
-- UBLOX_EVK_ODIN_W2 + SPIF (requires shield) + FATFS
-- UBLOX_EVK_ODIN_W2 + DataFlash (requires shield) + LittleFS
-- UBLOX_EVK_ODIN_W2 + DataFlash (requires shield) + FATFS
+- UBLOX_EVK_ODIN_W2 \[1\] + Heap + LittleFS
+- UBLOX_EVK_ODIN_W2 \[1\] + Heap + FATFS
+- UBLOX_EVK_ODIN_W2 \[1\] + SD + LittleFS
+- UBLOX_EVK_ODIN_W2 \[1\] + SD + FATFS
+- UBLOX_EVK_ODIN_W2 \[1\] + SPIF (requires shield) + LittleFS
+- UBLOX_EVK_ODIN_W2 \[1\] + SPIF (requires shield) + FATFS
+- UBLOX_EVK_ODIN_W2 \[1\] + DataFlash (requires shield) + LittleFS
+- UBLOX_EVK_ODIN_W2 \[1\] + DataFlash (requires shield) + FATFS
 - NUCLEO_F429ZI + Heap + LittleFS
 - NUCLEO_F429ZI + Heap + FATFS
 - NUCLEO_F429ZI + SD (requires shield) + LittleFS
@@ -375,3 +375,16 @@ control over the allocation of storage.
 - NUCLEO_F429ZI + SPIF (requires shield) + FATFS
 - NUCLEO_F429ZI + DataFlash (requires shield) + LittleFS
 - NUCLEO_F429ZI + DataFlash (requires shield) + FATFS
+
+\[1\]: Note: The UBLOX_EVK_ODIN_W2 SPI pins conflict with the default serial
+pins. A different set of serial pins must be selected to use SPI flash with
+serial output.
+
+```c++
+// Connect Tx, Rx, and ground pins to a separte board running the passthrough example:
+// https://os.mbed.com/users/sarahmarshy/code/SerialPassthrough/file/2a3a62ee17fa/main.cpp/
+Serial pc(TX, RX);   
+
+pc.printf("...");    // Replace printf with pc.printf in the example
+```
+
