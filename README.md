@@ -380,4 +380,11 @@ control over the allocation of storage.
 pins. A different set of serial pins must be selected to use SPI flash with
 serial output.
 
-https://os.mbed.com/users/sarahmarshy/code/SerialPassthrough/file/2a3a62ee17fa/main.cpp/
+```c++
+// Connect Tx, Rx, and ground pins to a separte board running the passthrough example:
+// https://os.mbed.com/users/sarahmarshy/code/SerialPassthrough/file/2a3a62ee17fa/main.cpp/
+Serial pc(TX, RX);   
+
+pc.printf("...");    // Replace printf with pc.printf in the example
+```
+
