@@ -180,7 +180,7 @@ example by changing the class declared in main.cpp.
 
 ``` diff
 - LittleFileSystem fs("fs");
-+ FATFileSysten fs("fs");
++ FATFileSystem fs("fs");
 ```
 
 **Note:** Different file systems require different minimum numbers of storage
