@@ -72,8 +72,9 @@ void erase() {
 int main() {
     printf("--- Mbed OS filesystem example ---\n");
 
-    // Setup the irq in case we want to use it
-    irq.fall(erase);
+    // Setup the erase event on button press, use the event queue
+    // to avoid running in interrupt context
+    irq.fall(mbed_event_queue()->event(erase));
 
     // Try to mount the filesystem
     printf("Mounting the filesystem... ");
