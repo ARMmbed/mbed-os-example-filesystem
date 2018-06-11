@@ -18,9 +18,11 @@ You can find more information about the Mbed OS file system and other related pi
 
 ## Hardware requirements
 
-This example uses a block device as storage. This can be either an external
-block device (one of SPI flash, DataFlash or an SD card) or simulated on a
-heap block device on boards with enough RAM.
+This example uses a block device as storage. This can be one of:
+
+* A built-in SPI flash, such as on the [FRDM-K82F](https://os.mbed.com/platforms/FRDM-K82F/).
+* An external block device (one of SPI flash, DataFlash or an SD card). 
+* Simulated on a heap block device on boards with enough RAM.
 
 This example uses an instance of the LittleFileSystem API (LittleFS) on external SPI flash.
 The [changing the block device](#changing-the-block-device) section describes
