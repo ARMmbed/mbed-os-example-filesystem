@@ -32,7 +32,7 @@ how to change the file system or block device in the example.
 
 #### Import the example
 
-Make sure you have an Mbed development environment set up. [Get started with Mbed OS](https://os.mbed.com/docs/latest/tutorials/your-first-program.html)
+Make sure you have an Mbed development environment set up. [Get started with Mbed OS](https://os.mbed.com/docs/latest/tutorials/mbed-os-quick-start.html)
 to set everything up.
 
 From the command-line, import the example:
