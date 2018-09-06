@@ -277,6 +277,18 @@ Mbed OS has several options for the block device:
           MBED_CONF_SPIF_DRIVER_SPI_CS);
   ```
 
+  Starting mbed-os 5.10 the SPIFBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration:
+```
+  "target_overrides": {
+         ...
+         "NUCLEO_F429ZI": {
+             "components_add": ["SPIF"],
+             ...
+         },
+         ...
+  }
+```
+
 - **DataFlashBlockDevice** - Block device driver for NOR-based SPI flash devices
   that support the DataFlash protocol, such as the Adesto AT45DB series of
   devices. DataFlash is a memory protocol that combines flash with SRAM buffers
@@ -293,6 +305,18 @@ Mbed OS has several options for the block device:
           MBED_CONF_DATAFLASH_SPI_CS);
   ```
 
+  Starting mbed-os 5.10 the DataFlashBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration:
+```
+  "target_overrides": {
+         ...
+         "NUCLEO_F429ZI": {
+             "components_add": ["DATAFLASH"],
+             ...
+         },
+         ...
+  }
+```
+
 - **SDBlockDevice** - Block device driver for SD cards and eMMC memory chips. SD
   cards or eMMC chips offer a full FTL layer on top of NAND flash. This makes the
   storage well-suited for systems that require a about 1GB of memory.
@@ -306,6 +330,18 @@ Mbed OS has several options for the block device:
           MBED_CONF_SD_SPI_CLK,
           MBED_CONF_SD_SPI_CS);
   ```
+
+  Starting mbed-os 5.10 the SDBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration:
+```
+  "target_overrides": {
+         ...
+         "NUCLEO_F429ZI": {
+             "components_add": ["SD"],
+             ...
+         },
+         ...
+  }
+```
 
 - [**HeapBlockDevice**](https://os.mbed.com/docs/v5.6/reference/heapblockdevice.html) -
   Block device that simulates storage in RAM using the heap. Do not use the heap
