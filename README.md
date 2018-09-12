@@ -261,6 +261,32 @@ pins in `<driver>/mbed_lib.json` are correct. For example, to change the pins fo
          ...
      }
 ```
+The pins macros define above can be override at the application configuration file using the driver prefix before the parameter name.
+```
+   "target_overrides": {
+         ...
+         "NUCLEO_F429ZI": {
+             "spif-driver.SPI_MOSI": "PC_12",
+             "spif-driver.SPI_MISO": "PC_11",
+             "spif-driver.SPI_CLK":  "PC_10",
+             "spif-driver.SPI_CS":   "PA_15"
+         },
+         ...
+     }
+```
+or 
+```
+   "target_overrides": {
+         ...
+         "NUCLEO_F429ZI": {
+             "sd.SPI_MOSI": "PC_12",
+             "sd.SPI_MISO": "PC_11",
+             "sd.SPI_CLK":  "PC_10",
+             "sd.SPI_CS":   "PA_15"
+         },
+         ...
+     }
+```
 
 Mbed OS has several options for the block device:
 
@@ -277,12 +303,12 @@ Mbed OS has several options for the block device:
           MBED_CONF_SPIF_DRIVER_SPI_CS);
   ```
 
-  Starting mbed-os 5.10 the SPIFBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration:
+  Starting mbed-os 5.10 the SPIFBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration at the application configuration file:
 ```
   "target_overrides": {
          ...
          "NUCLEO_F429ZI": {
-             "components_add": ["SPIF"],
+             "target.components_add": ["SPIF"],
              ...
          },
          ...
@@ -305,12 +331,12 @@ Mbed OS has several options for the block device:
           MBED_CONF_DATAFLASH_SPI_CS);
   ```
 
-  Starting mbed-os 5.10 the DataFlashBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration:
+  Starting mbed-os 5.10 the DataFlashBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration at the application configuration file:
 ```
   "target_overrides": {
          ...
          "NUCLEO_F429ZI": {
-             "components_add": ["DATAFLASH"],
+             "target.components_add": ["DATAFLASH"],
              ...
          },
          ...
@@ -331,12 +357,12 @@ Mbed OS has several options for the block device:
           MBED_CONF_SD_SPI_CS);
   ```
 
-  Starting mbed-os 5.10 the SDBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration:
+  Starting mbed-os 5.10 the SDBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration at the application configuration file:
 ```
   "target_overrides": {
          ...
          "NUCLEO_F429ZI": {
-             "components_add": ["SD"],
+             "target.components_add": ["SD"],
              ...
          },
          ...
