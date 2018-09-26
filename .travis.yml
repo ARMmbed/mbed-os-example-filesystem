@@ -1,11 +1,7 @@
 
 env:
   matrix:
-    - TARGET=K82F
-    - TARGET=NRF52840_DK
-    - TARGET=K64F
-    - TARGET=UBLOX_EVK_ODIN_W2
-    - TARGET=NUCLEO_F429ZI
+    
   global:
     - >
       STATUS=$'curl -so/dev/null --user $MBED_BOT --request POST
@@ -54,21 +50,12 @@ install:
 
 script:
   # Check that example compiles with littlefs + spif
-  - mbed compile -t GCC_ARM -m $TARGET -j0
-
-  # Check that example compiles with littlefs + dataflash
-  - sed -i 's/SPIFBlockDevice bd/DataFlashBlockDevice bd/g' main.cpp
-  - sed -i 's/MBED_CONF_SPIF_DRIVER/MBED_CONF_DATAFLASH/g' main.cpp
-  - mbed compile -t GCC_ARM -m $TARGET -j0
+  - mbed compile -t GCC_ARM -m K82F -j0
 
   # Check that example compiles with fatfs + sd
+  - sed -i 's/SPIFBlockDevice bd/SDBlockDevice bd/g' main.cpp
+  - sed -i 's/MBED_CONF_SPIF_DRIVER/MBED_CONF_SD/g' main.cpp
   - sed -i 's/LittleFileSystem fs/FATFileSystem fs/g' main.cpp
-  - sed -i 's/DataFlashBlockDevice bd/SDBlockDevice bd/g' main.cpp
-  - sed -i 's/MBED_CONF_DATAFLASH/MBED_CONF_SD/g' main.cpp
-  - mbed compile -t GCC_ARM -m $TARGET -j0
+  - mbed compile -t GCC_ARM -m K64F -j0
 
-  # Check that example compiles with fatfs + heap
-  - sed -i 's/SDBlockDevice bd(/HeapBlockDevice bd(1024*512, 512);/g' main.cpp
-  - sed -i '/MBED_CONF_SD/d' main.cpp
-  - mbed compile -t GCC_ARM -m $TARGET -j0
 
