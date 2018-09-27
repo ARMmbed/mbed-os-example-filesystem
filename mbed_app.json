@@ -1,7 +1,8 @@
 {
     "target_overrides": {
         "*": {
-            "platform.stdio-convert-newlines": true
+            "platform.stdio-convert-newlines": true,
+            "target.components_add": ["SD", "SPIF", "DATAFLASH", "FLASHIAP"]
         }
     }
 }
