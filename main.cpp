@@ -20,14 +20,48 @@
 // Block devices
 #if COMPONENT_SPIF
 #include "SPIFBlockDevice.h"
+// Physical block device, can be any device that supports the BlockDevice API
+SPIFBlockDevice bd(
+        MBED_CONF_SPIF_DRIVER_SPI_MOSI,
+        MBED_CONF_SPIF_DRIVER_SPI_MISO,
+        MBED_CONF_SPIF_DRIVER_SPI_CLK,
+        MBED_CONF_SPIF_DRIVER_SPI_CS);
+
 #endif
 
 #if COMPONENT_DATAFLASH
 #include "DataFlashBlockDevice.h"
+// Physical block device, can be any device that supports the BlockDevice API
+DataFlashBlockDevice bd(
+        MBED_CONF_DATAFLASH_SPI_MOSI,
+        MBED_CONF_DATAFLASH_SPI_MISO,
+        MBED_CONF_DATAFLASH_SPI_CLK,
+        MBED_CONF_DATAFLASH_SPI_CS);
+
 #endif 
 
 #if COMPONENT_SD
 #include "SDBlockDevice.h"
+// Physical block device, can be any device that supports the BlockDevice API
+SDBlockDevice bd(
+        MBED_CONF_SD_SPI_MOSI,
+        MBED_CONF_SD_SPI_MISO,
+        MBED_CONF_SD_SPI_CLK,
+        MBED_CONF_SD_SPI_CS);
+#endif 
+
+#if COMPONENT_QSPIF
+#include "QSPIFBlockDevice.h"
+// Physical block device, can be any device that supports the BlockDevice API
+QSPIFBlockDevice bd(
+        MBED_CONF_QSPIF_QSPI_IO0,
+        MBED_CONF_QSPIF_QSPI_IO1,
+        MBED_CONF_QSPIF_QSPI_IO2,
+        MBED_CONF_QSPIF_QSPI_IO3,
+        MBED_CONF_QSPIF_QSPI_SCK,
+        MBED_CONF_QSPIF_QSPI_CSN,
+        QSPIF_POLARITY_MODE_0,
+        MBED_CONF_QSPIF_QSPI_FREQ);
 #endif 
 
 #include "HeapBlockDevice.h"
@@ -36,13 +70,6 @@
 #include "LittleFileSystem.h"
 #include "FATFileSystem.h"
 
-
-// Physical block device, can be any device that supports the BlockDevice API
-SPIFBlockDevice bd(
-        MBED_CONF_SPIF_DRIVER_SPI_MOSI,
-        MBED_CONF_SPIF_DRIVER_SPI_MISO,
-        MBED_CONF_SPIF_DRIVER_SPI_CLK,
-        MBED_CONF_SPIF_DRIVER_SPI_CS);
 
 // File system declaration
 LittleFileSystem fs("fs");
@@ -231,4 +258,3 @@ int main() {
         
     printf("Mbed OS filesystem example done!\n");
 }
-
