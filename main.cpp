@@ -17,32 +17,14 @@
 #include <stdio.h>
 #include <errno.h>
 
-// Block devices
-#if COMPONENT_SPIF
-#include "SPIFBlockDevice.h"
-#endif
-
-#if COMPONENT_DATAFLASH
-#include "DataFlashBlockDevice.h"
-#endif 
-
-#if COMPONENT_SD
-#include "SDBlockDevice.h"
-#endif 
-
-#include "HeapBlockDevice.h"
+#include "BlockDevice.h"
 
 // File systems
 #include "LittleFileSystem.h"
 #include "FATFileSystem.h"
 
 
-// Physical block device, can be any device that supports the BlockDevice API
-SPIFBlockDevice bd(
-        MBED_CONF_SPIF_DRIVER_SPI_MOSI,
-        MBED_CONF_SPIF_DRIVER_SPI_MISO,
-        MBED_CONF_SPIF_DRIVER_SPI_CLK,
-        MBED_CONF_SPIF_DRIVER_SPI_CS);
+BlockDevice *bd = BlockDevice::get_default_instance();
 
 // File system declaration
 LittleFileSystem fs("fs");
@@ -53,7 +35,7 @@ InterruptIn irq(BUTTON1);
 void erase() {
     printf("Initializing the block device... ");
     fflush(stdout);
-    int err = bd.init();
+    int err = bd->init();
     printf("%s\n", (err ? "Fail :(" : "OK"));
     if (err) {
         error("error: %s (%d)\n", strerror(-err), err);
@@ -61,7 +43,7 @@ void erase() {
 
     printf("Erasing the block device... ");
     fflush(stdout);
-    err = bd.erase(0, bd.size());
+    err = bd->erase(0, bd->size());
     printf("%s\n", (err ? "Fail :(" : "OK"));
     if (err) {
         error("error: %s (%d)\n", strerror(-err), err);
@@ -69,7 +51,7 @@ void erase() {
 
     printf("Deinitializing the block device... ");
     fflush(stdout);
-    err = bd.deinit();
+    err = bd->deinit();
     printf("%s\n", (err ? "Fail :(" : "OK"));
     if (err) {
         error("error: %s (%d)\n", strerror(-err), err);
@@ -88,14 +70,14 @@ int main() {
     // Try to mount the filesystem
     printf("Mounting the filesystem... ");
     fflush(stdout);
-    int err = fs.mount(&bd);
+    int err = fs.mount(bd);
     printf("%s\n", (err ? "Fail :(" : "OK"));
     if (err) {
         // Reformat if we can't mount the filesystem
         // this should only happen on the first boot
         printf("No filesystem found, formatting... ");
         fflush(stdout);
-        err = fs.reformat(&bd);
+        err = fs.reformat(bd);
         printf("%s\n", (err ? "Fail :(" : "OK"));
         if (err) {
             error("error: %s (%d)\n", strerror(-err), err);
