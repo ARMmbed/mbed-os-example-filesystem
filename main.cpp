@@ -19,15 +19,22 @@
 
 #include "BlockDevice.h"
 
-// File systems
-#include "LittleFileSystem.h"
-#include "FATFileSystem.h"
-
-
+// This will take the system's default block device
 BlockDevice *bd = BlockDevice::get_default_instance();
 
-// File system declaration
+// Instead of the default block device, you can define your own block device.
+// For example: HeapBlockDevice with size of 2048 bytes, read size 1, write size 1 and erase size 512.
+// #include "HeapBlockDevice.h"
+// BlockDevice *bd = new HeapBlockDevice(2048, 1, 1, 512);
+
+
+// This example uses LittleFileSystem as the default file system
+#include "LittleFileSystem.h"
 LittleFileSystem fs("fs");
+
+// Uncomment the following two lines and comment the previous two to use FAT file system.
+// #include "FATFileSystem.h"
+// FATFileSystem fs("fs");
 
 
 // Set up the button to trigger an erase
