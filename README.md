@@ -230,20 +230,28 @@ Mbed OS has two options for the file system:
 ## Changing the block device
 
 In Mbed OS, a C++ classes that inherits from the [BlockDevice](https://os.mbed.com/docs/latest/reference/storage.html#block-devices)
-interface represents each block device. You can change the filesystem in the
-example by changing the class declared in main.cpp.
+interface represents each block device. If `blockdevice` configuration in `mbed_lib.json` is not set, the default block device defined for your target in `targets.json. will be used.
+You can override the default block device compoenent in your `mbed_app.json`:
+```
+   "target_overrides": {
+         ...
+         "NUCLEO_F429ZI": {
+             "target.components_add": ["SPIF"],
+         },
+         ...
+     }
 
-``` diff
--SPIFBlockDevice bd(
--        MBED_CONF_SPIF_DRIVER_SPI_MOSI,
--        MBED_CONF_SPIF_DRIVER_SPI_MISO,
--        MBED_CONF_SPIF_DRIVER_SPI_CLK,
--        MBED_CONF_SPIF_DRIVER_SPI_CS);
-+SDBlockDevice bd(
-+        MBED_CONF_SD_SPI_MOSI,
-+        MBED_CONF_SD_SPI_MISO,
-+        MBED_CONF_SD_SPI_CLK,
-+        MBED_CONF_SD_SPI_CS);
+```
+Or, you can change the dfault behaviour of get_default_instance()` , by implementing it, as mentioned in the [Default-BlockDevice-configuration page](https://os.mbed.com/docs/mbed-os/latest/reference/storage.html#Default-BlockDevice-configuration):
+
+```
+    #include "HeapBlockDevice.h"
+
+    BlockDevice *BlockDevice::get_default_instance()
+    {
+        static HeapBlockDevice default_bd(32 *1024);
+        return &default_bd;
+    }
 ```
 
 **Note:** Most block devices require pin assignments. Double check that the
