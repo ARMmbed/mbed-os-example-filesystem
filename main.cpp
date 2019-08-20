@@ -19,6 +19,9 @@
 
 #include "BlockDevice.h"
 
+// Maximum number of elements in buffer
+#define BUFFER_MAX_LEN 10
+
 // This will take the system's default block device
 BlockDevice *bd = BlockDevice::get_default_instance();
 
@@ -135,8 +138,19 @@ int main() {
         long pos = ftell(f);
 
         // Parse out the number and increment
-        int32_t number;
-        fscanf(f, "%d", &number);
+        char buf[BUFFER_MAX_LEN];
+        if (!fgets(buf, BUFFER_MAX_LEN, f)) {
+            error("error: %s (%d)\n", strerror(errno), -errno);
+        }
+        char *endptr;
+        int32_t number = strtol(buf, &endptr, 10);
+        if (
+            (errno == ERANGE) || // The number is too small/large
+            (endptr == buf) ||   // No character was read
+            (*endptr && *endptr != '\n') // The whole input was not converted
+        ) {
+            continue;
+        }
         number += 1;
 
         // Seek to beginning of number

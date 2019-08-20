@@ -45,7 +45,7 @@ cd mbed-os-example-filesystem
 #### Compile the example
 
 Invoke `mbed compile`, and specify the name of your platform and your favorite
-toolchain (`GCC_ARM`, `ARM`, `IAR`). For example, for the ARM Compiler 5:
+toolchain (`GCC_ARM`, `ARM`, `IAR`). For example, for the ARM toolchain:
 
 ```
 mbed compile -m K64F -t ARM
@@ -56,26 +56,25 @@ following result:
 
 ```
 [snip]
-+--------------------------+-------+-------+-------+
-| Module                   | .text | .data |  .bss |
-+--------------------------+-------+-------+-------+
-| Fill                     |   164 |     0 |  2136 |
-| Misc                     | 54505 |  2556 |   754 |
-| drivers                  |   640 |     0 |    32 |
-| features/filesystem      | 15793 |     0 |   550 |
-| features/storage         |    42 |     0 |   184 |
-| hal                      |   418 |     0 |     8 |
-| platform                 |  2355 |    20 |   582 |
-| rtos                     |   135 |     4 |     4 |
-| rtos/rtx                 |  5861 |    20 |  6870 |
-| targets/TARGET_Freescale |  8382 |    12 |   384 |
-| Subtotals                | 88295 |  2612 | 11504 |
-+--------------------------+-------+-------+-------+
-Allocated Heap: 24576 bytes
-Allocated Stack: unknown
-Total Static RAM memory (data + bss): 14116 bytes
-Total RAM memory (data + bss + heap + stack): 38692 bytes
-Total Flash memory (text + data + misc): 91947 bytes
+| Module              |  .text |.data |   .bss |
+|---------------------|--------|------|--------|
+| [lib]/c_w.l         |  13137 |   16 |    348 |
+| [lib]/fz_wm.l       |     34 |    0 |      0 |
+| [lib]/libcppabi_w.l |     44 |    0 |      0 |
+| [lib]/m_wm.l        |     48 |    0 |      0 |
+| anon$$obj.o         |     32 |    0 | 197888 |
+| main.o              |   2406 |    0 |    256 |
+| mbed-os/components  |   5568 |    0 |      0 |
+| mbed-os/drivers     |   2700 |    0 |   1136 |
+| mbed-os/events      |   1716 |    0 |   3108 |
+| mbed-os/features    |  16586 |    0 |    509 |
+| mbed-os/hal         |   1622 |    4 |     67 |
+| mbed-os/platform    |   7009 |   64 |    542 |
+| mbed-os/rtos        |  12132 |  168 |   6634 |
+| mbed-os/targets     |  19773 |   12 |    985 |
+| Subtotals           |  82807 |  264 | 211473 |
+Total Static RAM memory (data + bss): 211737 bytes
+Total Flash memory (text + data): 83071 bytes
 
 Image: ./BUILD/K64F/ARM/mbed-os-example-filesystem.bin
 ```
