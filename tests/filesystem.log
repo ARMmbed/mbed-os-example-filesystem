@@ -1,6 +1,5 @@
 --- Mbed OS filesystem example ---
 Mounting the filesystem... OK
-Opening "\/fs\/numbers.txt"... OK
 Incrementing numbers \(10\/10\)... OK
 Closing "\/fs\/numbers.txt"... OK
 Opening the root directory... OK
