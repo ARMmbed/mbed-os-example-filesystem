@@ -21,7 +21,7 @@
 
 // Maximum number of elements in buffer
 #define BUFFER_MAX_LEN 10
-
+#define FORCE_REFORMAT true
 // This will take the system's default block device
 BlockDevice *bd = BlockDevice::get_default_instance();
 
@@ -82,10 +82,9 @@ int main() {
     fflush(stdout);
     int err = fs.mount(bd);
     printf("%s\n", (err ? "Fail :(" : "OK"));
-    if (err) {
+    if (err || FORCE_REFORMAT) {
         // Reformat if we can't mount the filesystem
-        // this should only happen on the first boot
-        printf("No filesystem found, formatting... ");
+        printf("formatting... ");
         fflush(stdout);
         err = fs.reformat(bd);
         printf("%s\n", (err ? "Fail :(" : "OK"));
