@@ -16,6 +16,7 @@
 #include "mbed.h"
 #include <stdio.h>
 #include <errno.h>
+#include <functional>
 
 #include "BlockDevice.h"
 
@@ -68,6 +69,7 @@ void erase() {
     }
 }
 
+static auto erase_event = mbed_event_queue()->make_user_allocated_event(erase);
 
 // Entry point for the example
 int main() {
@@ -75,7 +77,7 @@ int main() {
 
     // Setup the erase event on button press, use the event queue
     // to avoid running in interrupt context
-    irq.fall(mbed_event_queue()->event(erase));
+    irq.fall(std::ref(erase_event));
 
     // Try to mount the filesystem
     printf("Mounting the filesystem... ");
