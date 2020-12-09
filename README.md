@@ -83,10 +83,11 @@ Image: ./BUILD/K64F/ARM/mbed-os-example-filesystem.bin
 #### Run the example
 
 1. Connect your Mbed Enabled device to the computer over USB.
+1. Open the UART of the board in your favorite UART viewing program. For
+   example, `mbed sterm`.
 1. Copy the binary file to the Mbed Enabled device.
 1. Press the reset button to start the program.
-1. Open the UART of the board in your favorite UART viewing program. For
-   example, `screen /dev/ttyACM0`.
+
    
 **Note:** The default serial port baud rate is 9600 bit/s.
 
@@ -176,8 +177,8 @@ for suggestions on what could be wrong and how to fix it.
 
 ## Changing the file system
 
-In Mbed OS, a C++ classes that inherits from the [FileSystem](https://os.mbed.com/docs/latest/reference/storage.html#declaring-a-file-system)
-interface represents each file system. You can change the file system in the
+In Mbed OS, C++ classes that inherit from the [FileSystem](https://os.mbed.com/docs/latest/reference/storage.html#declaring-a-file-system)
+interface represent each file system. You can change the file system in the
 example by changing the class declared in main.cpp.
 
 ``` diff
@@ -191,7 +192,7 @@ blocks to function. For the `FATFileSystem`, this example requires a minimum of
 blocks. You can find the number of blocks on a block device by dividing the
 block device's size by its erase size.
 
-Mbed OS has two options for the file system:
+Mbed OS has two filesystem options:
 
 - [**LittleFileSystem**](https://os.mbed.com/docs/latest/reference/littlefilesystem.html) -
   The little file system is a fail-safe file system we designed
@@ -229,26 +230,22 @@ Mbed OS has two options for the file system:
 
 ## Changing the block device
 
-In Mbed OS, a C++ classes that inherits from the [BlockDevice](https://os.mbed.com/docs/latest/reference/storage.html#block-devices)
-interface represents each block device. You can change the filesystem in the
-example by changing the class declared in main.cpp.
+Mbed-OS supports a variety of block device types, more information on supported devices can be found [here](https://os.mbed.com/docs/mbed-os/v6.5/apis/data-storage.html#Default-BlockDevice-configuration).
 
-``` diff
--SPIFBlockDevice bd(
--        MBED_CONF_SPIF_DRIVER_SPI_MOSI,
--        MBED_CONF_SPIF_DRIVER_SPI_MISO,
--        MBED_CONF_SPIF_DRIVER_SPI_CLK,
--        MBED_CONF_SPIF_DRIVER_SPI_CS);
-+SDBlockDevice bd(
-+        MBED_CONF_SD_SPI_MOSI,
-+        MBED_CONF_SD_SPI_MISO,
-+        MBED_CONF_SD_SPI_CLK,
-+        MBED_CONF_SD_SPI_CS);
+Each device is represented by a C++ class that inherits from the super class [BlockDevice](https://os.mbed.com/docs/latest/reference/storage.html#block-devices). These classes take their default configuration from the component configuration file. This may be found in `/mbed-os/storage/blockdevice/` under the path corresponding to the block device type. The default settings can be overridden in either this file, or, in `mbed_app.json`.
+
+For instance, to add a SPI flash block device to an STM32F29ZI board, the following modifications are made to the application configuration file.
+```
+   "target_overrides": {
+         ...
+         "NUCLEO_F429ZI": {
+             "target.components_add": ["SPIF"],
+         },
+         ...
+     }
 ```
 
-**Note:** Most block devices require pin assignments. Double check that the
-pins in `<driver>/mbed_lib.json` are correct. For example, to change the pins for the SD driver, open `sd-driver/config/mbed_lib.json`, and change your target platform to the correct pin-out in the `target_overrides` configuration:
-
+Then, if the pin assignments do not match, reassignments are added to the component configuration.  
 ```
    "target_overrides": {
          ...
@@ -261,157 +258,22 @@ pins in `<driver>/mbed_lib.json` are correct. For example, to change the pins fo
          ...
      }
 ```
-The pins macros define above can be override at the application configuration file using the driver prefix before the parameter name.
+This can also be done through the application configuration file.
+ 
 ```
-   "target_overrides": {
-         ...
-         "NUCLEO_F429ZI": {
-             "spif-driver.SPI_MOSI": "PC_12",
-             "spif-driver.SPI_MISO": "PC_11",
-             "spif-driver.SPI_CLK":  "PC_10",
-             "spif-driver.SPI_CS":   "PA_15"
-         },
-         ...
-     }
-```
-or 
-```
-   "target_overrides": {
-         ...
-         "NUCLEO_F429ZI": {
-             "sd.SPI_MOSI": "PC_12",
-             "sd.SPI_MISO": "PC_11",
-             "sd.SPI_CLK":  "PC_10",
-             "sd.SPI_CS":   "PA_15"
-         },
-         ...
-     }
-```
+    "target_overrides": {
+          ...
+          "NUCLEO_F429ZI": {
+              "spif-driver.SPI_MOSI": "PC_12",
+              "spif-driver.SPI_MISO": "PC_11",
+              "spif-driver.SPI_CLK":  "PC_10",
+              "spif-driver.SPI_CS":   "PA_15"
+          },
+          ...
+      }
+ ```
 
-Mbed OS has several options for the block device:
-
-- **SPIFBlockDevice** - Block device driver for NOR-based SPI flash devices that
-  support SFDP. NOR-based SPI flash supports byte-sized read and writes, with an
-  erase size of about 4kbytes. An erase sets a block to all 1s, with successive
-  writes clearing set bits.
-
-  ``` cpp
-  SPIFBlockDevice bd(
-          MBED_CONF_SPIF_DRIVER_SPI_MOSI,
-          MBED_CONF_SPIF_DRIVER_SPI_MISO,
-          MBED_CONF_SPIF_DRIVER_SPI_CLK,
-          MBED_CONF_SPIF_DRIVER_SPI_CS);
-  ```
-
-  Starting mbed-os 5.10 the SPIFBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration at the application configuration file:
-```
-  "target_overrides": {
-         ...
-         "NUCLEO_F429ZI": {
-             "target.components_add": ["SPIF"],
-             ...
-         },
-         ...
-  }
-```
-
-- **DataFlashBlockDevice** - Block device driver for NOR-based SPI flash devices
-  that support the DataFlash protocol, such as the Adesto AT45DB series of
-  devices. DataFlash is a memory protocol that combines flash with SRAM buffers
-  for a programming interface. DataFlash supports byte-sized read and writes, with
-  an erase size of about 528 bytes or sometimes 1056 bytes. DataFlash provides
-  erase sizes with an extra 16 bytes for error correction codes (ECC), so a flash
-  translation layer (FTL) may still present 512 byte erase sizes.
-  
-  ``` cpp
-  DataFlashBlockDevice bd(
-          MBED_CONF_DATAFLASH_SPI_MOSI,
-          MBED_CONF_DATAFLASH_SPI_MISO,
-          MBED_CONF_DATAFLASH_SPI_CLK,
-          MBED_CONF_DATAFLASH_SPI_CS);
-  ```
-
-  Starting mbed-os 5.10 the DataFlashBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration at the application configuration file:
-```
-  "target_overrides": {
-         ...
-         "NUCLEO_F429ZI": {
-             "target.components_add": ["DATAFLASH"],
-             ...
-         },
-         ...
-  }
-```
-
-- **SDBlockDevice** - Block device driver for SD cards and eMMC memory chips. SD
-  cards or eMMC chips offer a full FTL layer on top of NAND flash. This makes the
-  storage well-suited for systems that require a about 1GB of memory.
-  Additionally, SD cards are a popular form of portable storage. They are useful
-  if you want to store data that you can access from a PC.
-  
-  ``` cpp
-  SDBlockDevice bd(
-          MBED_CONF_SD_SPI_MOSI,
-          MBED_CONF_SD_SPI_MISO,
-          MBED_CONF_SD_SPI_CLK,
-          MBED_CONF_SD_SPI_CS);
-  ```
-
-  Starting mbed-os 5.10 the SDBlockDevice is a component under mbed-os. In order to add a component to the application use the following `target_overrides` configuration at the application configuration file:
-```
-  "target_overrides": {
-         ...
-         "NUCLEO_F429ZI": {
-             "target.components_add": ["SD"],
-             ...
-         },
-         ...
-  }
-```
-
-- [**HeapBlockDevice**](https://os.mbed.com/docs/v5.6/reference/heapblockdevice.html) -
-  Block device that simulates storage in RAM using the heap. Do not use the heap
-  block device for storing data persistently because a power loss causes
-  complete loss of data. Instead, use it fortesting applications when a storage
-  device is not available.
-  
-  ``` cpp
-  HeapBlockDevice bd(1024*512, 512);
-  ```
-
-Additionally, Mbed OS contains several utility block devices to give you better
-control over the allocation of storage.
-
-- [**SlicingBlockDevice**](https://os.mbed.com/docs/latest/reference/slicingblockdevice.html) -
-  With the slicing block device, you can partition storage into smaller block
-  devices that you can use independently.
-
-- [**ChainingBlockDevice**](https://os.mbed.com/docs/latest/reference/chainingblockdevice.html) -
-  With the chaining block device, you can chain multiple block devices together
-  and extend the usable amount of storage.
-
-- [**MBRBlockDevice**](https://os.mbed.com/docs/latest/reference/mbrblockdevice.html) -
-  Mbed OS comes with support for storing partitions on disk with a Master Boot
-  Record (MBR). The MBRBlockDevice provides this functionality and supports
-  creating partitions at runtime or using preformatted partitions configured
-  separately from outside the application.
-
-- **ReadOnlyBlockDevice** - With the read-only block device, you can wrap a
-  block device in a read-only layer, ensuring that user of the block device does
-  not modify the storage.
-
-- **ProfilingBlockDevice** - With the profiling block device, you can profile
-  the quantity of erase, program and read operations that are incurred on a
-  block device.
-
-- **ObservingBlockDevice** - The observing block device grants the user the
-  ability to register a callback on block device operations. You can use this to
-  inspect the state of the block device, log different metrics or perform some
-  other operation.
-
-- **ExhaustibleBlockDevice** - Useful for evaluating how file systems respond to
-  wear, the exhaustible block device simulates wear on another form of storage.
-  You can configure it to expire blocks as necessary.
+Alternatively, `BlockDevice::get_default_instance()` may be re-implemented by the user to bypass all default settings.
 
 ## Tested configurations
 
@@ -457,4 +319,3 @@ pc.printf("...");    // Replace printf with pc.printf in the example
 The software is provided under Apache-2.0 license. Contributions to this project are accepted under the same license. Please see [contributing.md](CONTRIBUTING.md) for more info.
 
 This project contains code from other projects. The original license text is included in those source files. They must comply with our license guide.
-
