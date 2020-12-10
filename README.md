@@ -26,8 +26,8 @@ This example uses a block device as storage. This can be one of:
 * Simulated on a heap block device on boards with enough RAM.
 
 This example uses an instance of the LittleFileSystem API (LittleFS) on external SPI flash.
-The [changing the block device](#changing-the-block-device) section describes
-how to change the file system or block device in the example.
+The section [changing the filesystem](#changing-the-file-system) describes
+how to switch between the LittleFileSystem and the FatFileSystem.
 
 ## Usage
 
@@ -46,7 +46,7 @@ cd mbed-os-example-filesystem
 #### Compile the example
 
 Invoke `mbed compile`, and specify the name of your platform and your favorite
-toolchain (`GCC_ARM`, `ARM`, `IAR`). For example, for the ARM toolchain:
+toolchain. For example, for the ARM toolchain:
 
 ```
 mbed compile -m K64F -t ARM
@@ -83,7 +83,7 @@ Image: ./BUILD/K64F/ARM/mbed-os-example-filesystem.bin
 #### Run the example
 
 1. Connect your Mbed Enabled device to the computer over USB.
-1. Open the UART of the board in your favorite UART viewing program. For
+1. Open a serial terminal to to the serial port of your connected target. For
    example, `mbed sterm`.
 1. Copy the binary file to the Mbed Enabled device.
 1. Press the reset button to start the program.
@@ -177,10 +177,10 @@ for suggestions on what could be wrong and how to fix it.
 
 ## Changing the file system
 
-In Mbed OS, C++ classes that inherit from the [FileSystem](https://os.mbed.com/docs/latest/reference/storage.html#declaring-a-file-system)
-interface represent each file system. You can change the file system in the
-example by changing the class declared in main.cpp.
+In Mbed OS, C++ classes that inherit from the [FileSystem](https://os.mbed.com/docs/mbed-os/latest/apis/filesystem.html)
+interface are used to implement a file system instance. Mbed OS currently supports the [LittleFileSystem](https://os.mbed.com/docs/mbed-os/latest/apis/littlefilesystem.html), and [FATFileSystem](https://os.mbed.com/docs/mbed-os/latest/apis/fatfilesystem.html).  In this example, you can determine which is used, by modifying the declaration of the object ```fs``` in main.cpp.
 
+For instance, to use the FATFileSystem, declare ```fs``` as an instance of the class FATFileSystem: 
 ``` diff
 - LittleFileSystem fs("fs");
 + FATFileSystem fs("fs");
@@ -192,88 +192,9 @@ blocks to function. For the `FATFileSystem`, this example requires a minimum of
 blocks. You can find the number of blocks on a block device by dividing the
 block device's size by its erase size.
 
-Mbed OS has two filesystem options:
-
-- [**LittleFileSystem**](https://os.mbed.com/docs/latest/reference/littlefilesystem.html) -
-  The little file system is a fail-safe file system we designed
-  for embedded systems, specifically for microcontrollers that use flash
-  storage.
-  
-  ``` cpp
-  LittleFileSystem fs("fs");
-  ```
-
-  - **Bounded RAM/ROM** - This file system works with a limited amount of memory.
-    It avoids recursion and limits dynamic memory to configurable
-    buffers.
-  
-  - **Power-loss resilient** - We designed this for operating systems
-    that may have random power failures. It has strong copy-on-write
-    guarantees and keeps storage on disk in a valid state.
-  
-  - **Wear leveling** - Because the most common form of embedded storage is
-    erodible flash memories, this file system provides a form of dynamic wear
-    leveling for systems that cannot fit a full flash translation layer.
-
-- **FATFileSystem** - The FAT file system is a well-known file system that you
-  can find on almost every system, including PCs. The Mbed OS implementation of
-  the FAT file system is based on ChanFS and is optimized for small embedded systems.
-  
-  ``` cpp
-  FATFileSystem fs("fs");
-  ```
-
-  - **Portable** - Almost every operating system supports the FAT file system,
-    which is the most common file system found on portable storage, such as SD
-    cards and flash drives. The FAT file system is the easiest way to support
-    access from a PC.
-
 ## Changing the block device
 
-Mbed-OS supports a variety of block device types, more information on supported devices can be found [here](https://os.mbed.com/docs/mbed-os/v6.5/apis/data-storage.html#Default-BlockDevice-configuration).
-
-Each device is represented by a C++ class that inherits from the super class [BlockDevice](https://os.mbed.com/docs/latest/reference/storage.html#block-devices). These classes take their default configuration from the component configuration file. This may be found in `/mbed-os/storage/blockdevice/` under the path corresponding to the block device type. The default settings can be overridden in either this file, or, in `mbed_app.json`.
-
-For instance, to add a SPI flash block device to an STM32F29ZI board, the following modifications are made to the application configuration file.
-```
-   "target_overrides": {
-         ...
-         "NUCLEO_F429ZI": {
-             "target.components_add": ["SPIF"],
-         },
-         ...
-     }
-```
-
-Then, if the pin assignments do not match, reassignments are added to the component configuration.  
-```
-   "target_overrides": {
-         ...
-         "NUCLEO_F429ZI": {
-             "SPI_MOSI": "PC_12",
-             "SPI_MISO": "PC_11",
-             "SPI_CLK":  "PC_10",
-             "SPI_CS":   "PA_15"
-         },
-         ...
-     }
-```
-This can also be done through the application configuration file.
- 
-```
-    "target_overrides": {
-          ...
-          "NUCLEO_F429ZI": {
-              "spif-driver.SPI_MOSI": "PC_12",
-              "spif-driver.SPI_MISO": "PC_11",
-              "spif-driver.SPI_CLK":  "PC_10",
-              "spif-driver.SPI_CS":   "PA_15"
-          },
-          ...
-      }
- ```
-
-Alternatively, `BlockDevice::get_default_instance()` may be re-implemented by the user to bypass all default settings.
+Mbed-OS supports a variety of [block devices](https://os.mbed.com/docs/mbed-os/latest/apis/data-storage.html#Default-BlockDevice-configuration). You can find information on configuring, and changing the block device used in this example [here](https://github.com/ARMmbed/mbed-os-example-blockdevice#changing-the-block-device).
 
 ## Tested configurations
 
@@ -306,7 +227,7 @@ Alternatively, `BlockDevice::get_default_instance()` may be re-implemented by th
 pins. A different set of serial pins must be selected to use SPI flash with
 serial output.
 
-```c++
+``` cpp
 // Connect Tx, Rx, and ground pins to a separte board running the passthrough example:
 // https://os.mbed.com/users/sarahmarshy/code/SerialPassthrough/file/2a3a62ee17fa/main.cpp/
 Serial pc(TX, RX);   
