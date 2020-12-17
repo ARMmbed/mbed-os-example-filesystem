@@ -29,8 +29,6 @@ target_link_libraries(${APP_TARGET}
         mbed-os
         mbed-events
         mbed-storage
-        mbed-storage-qspif
-        mbed-storage-flashiap
 )
 
 mbed_set_post_build(${APP_TARGET})
