@@ -5,18 +5,6 @@ This example demonstrates how to use the Mbed OS file system.
 
 You can find more information about the Mbed OS file system and other related pieces of the Mbed OS storage stack [in the storage overview](https://os.mbed.com/docs/latest/reference/storage.html).
 
-**Table of contents:**
-
-1. [Hardware requirements](#hardware-requirements)
-1. [Usage](#usage)
-   - [Import the example](#import-the-example)
-   - [Compile the example](#compile-the-example)
-   - [Run the example](#run-the-example)
-   - [Troubleshooting](#troubleshooting)
-1. [Changing the file system](#changing-the-file-system)
-1. [Changing the block device](#changing-the-block-device)
-1. [Tested configurations](#tested-configurations)
-
 ## Hardware requirements
 
 This example uses a block device as storage. This can be one of:
@@ -29,69 +17,39 @@ This example uses an instance of the LittleFileSystem API (LittleFS) on external
 The section [changing the filesystem](#changing-the-file-system) describes
 how to switch between the LittleFileSystem and the FatFileSystem.
 
-## Usage
+## Mbed OS build tools
 
-#### Import the example
+### Mbed CLI 2
+Starting with version 6.5, Mbed OS uses Mbed CLI 2. It uses Ninja as a build system, and CMake to generate the build environment and manage the build process in a compiler-independent manner. If you are working with Mbed OS version prior to 6.5 then check the section [Mbed CLI 1](#mbed-cli-1).
+1. [Install Mbed CLI 2](https://os.mbed.com/docs/mbed-os/latest/build-tools/install-or-upgrade.html).
+1. From the command-line, import the example: `mbed-tools import mbed-os-example-filesystem`
+1. Change the current directory to where the project was imported.
 
-Make sure you have an Mbed development environment set up. [Get started with Mbed OS](https://os.mbed.com/docs/latest/tutorials/mbed-os-quick-start.html)
-to set everything up.
+### Mbed CLI 1
+1. [Install Mbed CLI 1](https://os.mbed.com/docs/mbed-os/latest/quick-start/offline-with-mbed-cli.html).
+1. From the command-line, import the example: `mbed import mbed-os-example-filesystem`
+1. Change the current directory to where the project was imported.
 
-From the command-line, import the example:
+## Building and running
 
-```
-mbed import mbed-os-example-filesystem
-cd mbed-os-example-filesystem
-```
+1. Connect a USB cable between the USB port on the board and the host computer.
+1. Run the following command to build the example project, program the microcontroller flash memory and open a serial monitor:
 
-#### Compile the example
+    * Mbed CLI 2
 
-Invoke `mbed compile`, and specify the name of your platform and your favorite
-toolchain. For example, for the ARM toolchain:
+    ```bash
+    $ mbed-tools compile -m <TARGET> -t <TOOLCHAIN> --flash --sterm
+    ```
 
-```
-mbed compile -m K64F -t ARM
-```
+    * Mbed CLI 1
 
-Your PC may take a few minutes to compile your code. At the end, you see the
-following result:
+    ```bash
+    $ mbed compile -m <TARGET> -t <TOOLCHAIN> --flash --sterm
+    ```
 
-```
-[snip]
-| Module              |  .text |.data |   .bss |
-|---------------------|--------|------|--------|
-| [lib]/c_w.l         |  13137 |   16 |    348 |
-| [lib]/fz_wm.l       |     34 |    0 |      0 |
-| [lib]/libcppabi_w.l |     44 |    0 |      0 |
-| [lib]/m_wm.l        |     48 |    0 |      0 |
-| anon$$obj.o         |     32 |    0 | 197888 |
-| main.o              |   2406 |    0 |    256 |
-| mbed-os/components  |   5568 |    0 |      0 |
-| mbed-os/drivers     |   2700 |    0 |   1136 |
-| mbed-os/events      |   1716 |    0 |   3108 |
-| mbed-os/features    |  16586 |    0 |    509 |
-| mbed-os/hal         |   1622 |    4 |     67 |
-| mbed-os/platform    |   7009 |   64 |    542 |
-| mbed-os/rtos        |  12132 |  168 |   6634 |
-| mbed-os/targets     |  19773 |   12 |    985 |
-| Subtotals           |  82807 |  264 | 211473 |
-Total Static RAM memory (data + bss): 211737 bytes
-Total Flash memory (text + data): 83071 bytes
+Your PC may take a few minutes to compile your code.
 
-Image: ./BUILD/K64F/ARM/mbed-os-example-filesystem.bin
-```
-
-#### Run the example
-
-1. Connect your Mbed Enabled device to the computer over USB.
-1. Open a serial terminal to to the serial port of your connected target. For
-   example, `mbed sterm`.
-1. Copy the binary file to the Mbed Enabled device.
-1. Press the reset button to start the program.
-
-   
-**Note:** The default serial port baud rate is 9600 bit/s.
-
-Expected output:
+## Expected output
 
 ```
 --- Mbed OS filesystem example ---
