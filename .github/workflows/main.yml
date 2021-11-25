@@ -1,0 +1,68 @@
+name: Build example application
+
+on:
+  pull_request:
+  push:
+
+jobs: 
+  build-cli-v1:
+    container:
+      image: ghcr.io/armmbed/mbed-os-env:master-latest
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        target: [K64F, K82F]
+        profile: [release, debug, develop]
+        
+
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+          
+      -
+        name: build-example
+        run: |
+          set -e
+          mbed deploy
+          # Check that example compiles with littlefs + spif
+          mbed compile -t GCC_ARM -m ${{ matrix.target }} --profile ${{ matrix.profile }}
+
+          # Check that example compiles with fatfs + HeapBlockDevice
+          sed -i 's/BlockDevice.h/HeapBlockDevice.h/g' main.cpp
+          sed -i 's/BlockDevice::get_default_instance()/new HeapBlockDevice(2048, 1, 1, 512)/g' main.cpp
+          sed -i 's/LittleFileSystem/FATFileSystem/g' main.cpp
+          mbed compile -t GCC_ARM -m ${{ matrix.target }} --profile ${{ matrix.profile }}          
+
+  build-cli-v2:
+    container:
+      image: ghcr.io/armmbed/mbed-os-env:master-latest
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        target: [K64F, K82F]
+        profile: [release, debug, develop]
+        
+
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+          
+      -
+        name: build-example-application
+        run: |
+          set -e
+          mbed-tools deploy
+          # Check that example compiles with littlefs + spif
+          mbed-tools compile -t GCC_ARM -m ${{ matrix.target }} --profile ${{ matrix.profile }}
+
+          # Check that example compiles with fatfs + HeapBlockDevice
+          sed -i 's/BlockDevice.h/HeapBlockDevice.h/g' main.cpp
+          sed -i 's/BlockDevice::get_default_instance()/new HeapBlockDevice(2048, 1, 1, 512)/g' main.cpp
+          sed -i 's/LittleFileSystem/FATFileSystem/g' main.cpp
+          mbed-tools compile -t GCC_ARM -m ${{ matrix.target }} --profile ${{ matrix.profile }}
